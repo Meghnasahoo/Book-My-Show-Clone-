@@ -1,0 +1,91 @@
+package com.movie.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.movie.model.Movie;
+import com.movie.model.Movie_Repo;
+
+@Controller
+public class Admin_Controller {
+
+	@Autowired
+	Movie_Repo mrepo;
+	
+	@RequestMapping("admlogin")
+	public String adminlogin()
+	{
+		return "adminlogin";
+	}
+	@RequestMapping("admloginproc")
+	public String admLoginProc(@RequestParam("uemail")String email,@RequestParam("upass")String pass,ModelMap model)
+	{
+		if(email.equals("admin@gmail.com")&& pass.equals("admin"))
+		{
+			return "admin_dashboard";
+		}
+		else 
+		{
+			model.put("msg", "email or password error!");
+			return "adminlogin";
+		}
+	}
+	@RequestMapping("admdash")
+	public String adminDashboard()
+	{
+		return "admin_dashboard";
+	}
+	
+	@RequestMapping("addmovie")
+	public String addMovie()
+	{
+		return "add_movies";
+	}
+	@RequestMapping("movi")
+	public String movie(@RequestParam("movieid")String mid,@RequestParam("moviename")String mname,@RequestParam("category")String category,@RequestParam("qty")String qty,@RequestParam("price")String price,@RequestParam("img")String imag,@RequestParam("actor")String act,@RequestParam("actress")String actrs,@RequestParam("director")String drct)
+	{
+		Movie m=new Movie();
+		m.setMovId(mid);
+		m.setMovieName(mname);
+		m.setCategory(category);
+		int q=Integer.parseInt(qty);
+		m.setTickno(q);
+		double pr=Double.parseDouble(price);
+	    m.setPrice(pr);
+	    m.setImage(imag);
+	    m.setActor(act);
+	    m.setActress(actrs);
+	    m.setDirector(drct);
+	    mrepo.save(m);
+		return "add_movies";
+	}
+	@RequestMapping("viewmovie")
+	public String viewMovie()
+	{
+		return "view_movies";
+	}
+	@RequestMapping("admlogout")
+	public String LogoutAdmin()
+	{
+		return "logoutadmin";
+	}
+	@RequestMapping("viewContact")
+	public String viewContact()
+	{
+		return "viewcontact";
+	}
+	@RequestMapping("viewUser")
+	public String viewUser()
+	{
+		return "viewuser";
+	}
+	@RequestMapping("viewFeedback")
+	public String viewFeedback()
+	{
+		return "viewfeedback";
+	}
+	
+}
